@@ -1,5 +1,4 @@
 from algorithm import astar as AStar
-import pandas as pd
 
 # Main
 a_star = AStar.AStar()
