@@ -16,6 +16,8 @@ class AStar:
     def build_graph(self, data: pd.DataFrame) -> None:
         for _, row in data.iterrows():
             self.graph.add_edge(row['First'], row['Last'], weight=row['Distance'])
+            for node in [row['First'], row['Last']]:
+                self.graph.nodes[node]['Estimated Distance to Ulm'] = row[f' Estimated Distance to Ulm']
 
     # Draw graph form dataset
     def draw_graph(self, path: list = None) -> None:
@@ -32,7 +34,7 @@ class AStar:
 
     # Estimates of the number of edges to reaching a goal
     def heuristic(self, n: str) -> float:
-        return nx.get_node_attributes(self.graph, 'heuristic').get(n, float('inf'))
+        return self.graph.nodes[n].get('Estimated Distance to Ulm', float('inf'))
 
     # A* algorithm
     def a_star_algorithm(self, start: str, goal: str) -> list:
@@ -61,7 +63,7 @@ class AStar:
                 tentative_g_score = g[n] + self.graph[n][neighbor]['weight']
                 if neighbor not in open_set:
                     open_set.add(neighbor)
-                elif tentative_g_score >= g.get(neighbor, float('inf')):
+                elif tentative_g_score > g.get(neighbor, float('inf')):
                     continue
                 parents[neighbor] = n
                 g[neighbor] = tentative_g_score
