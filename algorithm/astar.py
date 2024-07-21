@@ -42,9 +42,10 @@ class AStar:
             return self.graph.get(node, [])
         
         open_list = []
-        heapq.heappush(open_list, (0, start))  # (f_cost, node)
-        g_cost = {start: 0}  # Chi phí từ điểm bắt đầu đến các nút
-        parent = {start: None}  # Để lưu trữ cha của từng nút
+        heapq.heappush(open_list, (0, start))  
+        # Chi phí từ điểm bắt đầu đến các nút
+        g_cost = {start: 0}  
+        parent = {start: None} 
         
         while open_list:
             current_f, current_node = heapq.heappop(open_list)
@@ -54,7 +55,11 @@ class AStar:
                 while current_node is not None:
                     path.append(current_node)
                     current_node = parent[current_node]
-                return path[::-1]
+                path = path[::-1]
+                
+                # Tổng chi phí chính là g_cost của nút kết thúc
+                total_cost = g_cost[end]
+                return path, total_cost
             
             for neighbor, distance in get_neighbors(current_node):
                 new_g_cost = g_cost[current_node] + distance
@@ -63,10 +68,9 @@ class AStar:
                     f_cost = new_g_cost + heuristic(neighbor)
                     heapq.heappush(open_list, (f_cost, neighbor))
                     parent[neighbor] = current_node
-        
-        return None
+        return None, float('inf')  
 
-    def draw_graph(self, path):
+    def draw_graph(self, path, total_cost):
         G = nx.Graph()
         for city, neighbors in self.graph.items():
             for neighbor, distance in neighbors:
@@ -75,13 +79,22 @@ class AStar:
         pos = nx.spring_layout(G, seed=39)
         plt.figure(figsize=(10, 8))
         
+        # Vẽ đồ thị với các nút và cạnh
         nx.draw(G, pos, with_labels=True, node_size=500, node_color='lightblue', font_size=10, font_weight='bold')
         labels = nx.get_edge_attributes(G, 'weight')
         nx.draw_networkx_edge_labels(G, pos, edge_labels=labels, font_size=8)
         
         if path:
+            # Vẽ đường đi tìm được bằng màu đỏ
             path_edges = list(zip(path, path[1:]))
             nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='r', width=2)
         
+        # Hiển thị chi phí vào đồ thị
+        plt.text(0.05, 0.95, f"Total Cost: {total_cost}", 
+            horizontalalignment='left', verticalalignment='top',
+            fontsize=20, color='black', weight='bold',
+            bbox=dict(facecolor='white', alpha=0.8, edgecolor='none'))
+        
         plt.title("A* Algorithm Path")
         plt.show()
+

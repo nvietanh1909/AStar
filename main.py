@@ -5,7 +5,11 @@ astar_search = astar.AStar(file_path)
 
 start_city = "Linz"
 end_city = "Ulm"
-path = astar_search.a_star(start_city, end_city)
+path, total_cost = astar_search.a_star(start_city, end_city)
 
-print("Path found:", path)
-astar_search.draw_graph(path)
+if path:
+    print(f"Đường đi từ {start_city} -> {end_city} :", path)
+    print("Tổng chi phí:", total_cost)
+    astar_search.draw_graph(path, total_cost)
+else:
+    print("Không tìm thấy đường đi")
