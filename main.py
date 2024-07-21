@@ -1,14 +1,12 @@
-from algorithm import astar as AStar
+from algorithm import astar
 
-# Main
-a_star = AStar.AStar()
-data = a_star.read_file_data("./data/dataset-city.csv")
-a_star.build_graph(data)
-start_city = 'Linz'
-goal_city = 'Ulm'
-path = a_star.a_star_algorithm(start_city, goal_city)
-if path:
-    print(f"Found path: {path}")
-    a_star.draw_graph(path)
-else:
-    print(f"No path found from {start_city} to {goal_city}")
+# Example usage
+file_path = './data/dataset-city.csv'
+astar_search = astar.AStar(file_path)
+
+start_city = "Linz"
+end_city = "Ulm"
+path = astar_search.a_star(start_city, end_city)
+
+print("Path found:", path)
+astar_search.draw_graph(path)
