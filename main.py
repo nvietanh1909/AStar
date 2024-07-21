@@ -1,6 +1,5 @@
 from algorithm import astar
 
-# Example usage
 file_path = './data/dataset-city.csv'
 astar_search = astar.AStar(file_path)
 

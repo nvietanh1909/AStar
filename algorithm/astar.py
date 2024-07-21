@@ -112,4 +112,3 @@ class AStar:
         def __lt__(self, other):
             # So sánh hai nút dựa trên giá trị f để sử dụng
             return self.f < other.f
-
