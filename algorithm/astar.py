@@ -31,7 +31,6 @@ class AStar:
                 # Cập nhật giá trị heuristic cho các thành phố.
                 heuristics[city1] = heuristic
                 heuristics[city2] = heuristics.get(city2, heuristic)
-        
         return graph, heuristics
 
     def a_star(self, start, end):
@@ -77,7 +76,7 @@ class AStar:
                 G.add_edge(city, neighbor, weight=distance)
         
         pos = nx.spring_layout(G, seed=39)
-        plt.figure(figsize=(10, 8))
+        plt.figure(figsize=(10, 6))
         
         # Vẽ đồ thị với các nút và cạnh
         nx.draw(G, pos, with_labels=True, node_size=500, node_color='lightblue', font_size=10, font_weight='bold')
@@ -94,7 +93,5 @@ class AStar:
             horizontalalignment='left', verticalalignment='top',
             fontsize=20, color='black', weight='bold',
             bbox=dict(facecolor='white', alpha=0.8, edgecolor='none'))
-        
         plt.title("A* Algorithm Path")
         plt.show()
-
